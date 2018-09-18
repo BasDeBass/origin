@@ -1,6 +1,7 @@
 var eventListStart = [];
 var eventListEnd = [];
 var eventList = [];
+var extraEventList= [];
 
 
 function calandarsetter(){
@@ -50,6 +51,7 @@ function calandarsetter(){
 }
 
 function getZermelo(){
+  ReadJSON();
   console.log(getMonday(new Date()).getTime()/1000); // Mon Nov 08 2010
   var unixtime = parseInt(getMonday(new Date()).getTime()/1000);
   //var unixtime = Date.parse("23-8-2018").getTime()/1000
@@ -148,7 +150,7 @@ function get(message, data){
                       branch: data.branch
                     });
                 }
-
+                
       calandarsetter();
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -285,3 +287,29 @@ function UnixToTime(Timestamp){
     });
   }
 });*/
+
+function ReadJSON(){
+  /////////Read JSON data
+                $.getJSON("ExtraEvents.json", function (data) {
+                  $.each(data, function (index, value) {
+                    console.log("ok");
+                    extraEventList.push([index, value]);
+                    if(index == "New"){
+                      console.log("okagain");
+                      eventList.push({
+                      title: value.Subject + `\n ${value.Location}`,
+                      start: value.Start * 1000,
+                      end: value.Finish * 1000,
+                      color: value.Color,
+                      teacher: value.Teacher,
+                      location: value.Location,
+                      subject: value.Subject,
+                      remark: value.Remark,
+                      branch: value.Branch
+                    });
+                    }
+                });
+                console.log(extraEventList);
+              });
+                /////////
+}

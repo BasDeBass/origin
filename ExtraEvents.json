@@ -1,0 +1,38 @@
+{
+	"New": {
+		"AllDay": false,
+		"Start": 1537254000,
+		"Finish": 1537255800,
+		"Subject": "MTL",
+		"Location": "D110",
+		"Color": "#FFFF00",
+		"Teacher": "OD",
+		"Remark": "remark..",
+		"Branch": "branch..",
+		"Description": "Homework thing..."
+	},
+	"AllDay": {
+		"AllDay": true,
+		"Start": 20310340,
+		"Finish": 0,
+		"Subject": "Tets",
+		"Location": "D110",
+		"Color": "#FFFF00",
+		"Teacher": "OD",
+		"Remark": "remark..",
+		"Branch": "branch..",
+		"Description": "Homework a..."
+	},
+	"Addition": {
+		"AllDay": true,
+		"Start": 20310340,
+		"Finish": 0,
+		"Subject": "Tets",
+		"Location": "D110",
+		"Color": "#FFFF00",
+		"Teacher": "OD",
+		"Remark": "remark..",
+		"Branch": "branch..",
+		"Description": "Homework a..."
+	}
+}
