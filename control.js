@@ -119,3 +119,5 @@ function parseDate(input) {
 }
 
 ////////////////////////////////////////zorg er voor dat je vroeg de tijd krijgt op maandag
+
+//////////Add json reader
