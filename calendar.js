@@ -132,6 +132,8 @@ function get(message, data){
                     var blockColor = '#0051c4';
                     if(data.modified == true) blockColor = '#00e5e5';
                     if(data.type == "exam") blockColor = '#ffd800';
+                    if(data.subjects[0] == "kstsp" || data.subjects[0] == "kstspd" || data.subjects[0].includes("kstalg") || data.subjects[0].includes("kbb")) blockColor = '#e5ff00';
+                    if(data.subjects[0].includes("cup")) blockColor = '#f2f2f2';
                     //if(data.type !== "exam") blockColor = '#ffd8ff';
                     if(data.cancelled == true) blockColor = '#ff0000';
                     eventList.push({
