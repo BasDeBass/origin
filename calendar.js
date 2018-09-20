@@ -3,11 +3,14 @@ var eventListEnd = [];
 var eventList = [];
 var extraEventList= [];
 
+var accessToken;
+
 
 function calandarsetter(){
   $('#calendar').fullCalendar({
     defaultView: 'agendaWeek',
       themeSystem: 'bootstrap3',
+      nowIndicator: true,
       //contentHeight: 6000,
       //defaultDate: '2018-08-05',
       slotDuration:'00:15:00',
@@ -15,8 +18,16 @@ function calandarsetter(){
       eventLimit: true, // allow "more" link when too many events
       header: {
         left:   'title',
-        center: '',
+        center: 'myCustomButton',
         right:  'today, prev,next'
+      },
+      customButtons: {
+        myCustomButton: {
+          text: 'custom!',
+          click: function() {
+            alert('clicked the custom button!');
+          }
+        }
       },
       buttonText: {
         today:    'today',
@@ -37,10 +48,21 @@ function calandarsetter(){
       },
       eventClick: function(calEvent, jsEvent, view) {
 
-        alert('Event: ' + calEvent.subject);
-        alert(calEvent.teacher);
-        alert(calEvent.location);
-        alert(calEvent.locationst);
+        //alert('Event: ' + calEvent.subject);
+        alert(`ID: ${calEvent.id} \nTitle: ${calEvent.title} \nStart: ${calEvent.start} \nEnd: ${calEvent.end} \nColor: ${calEvent.color} \nTeacher: ${calEvent.teacher} \nLocation: ${calEvent.location} \nLocations: ${calEvent.locations} \nSubject: ${calEvent.subject} \nRemark: ${calEvent.remark} \nBranch: ${calEvent.branch} \nDescription: ${calEvent.description} \nAllDay: ${calEvent.allDay} \n`);
+
+                      // id: data.id,
+                      // title: data.subjects[0] + `\n ${data.locations[0]}`,
+                      // start: data.start * 1000,
+                      // end: data.end * 1000,
+                      // color: blockColor,
+                      // teacher: data.teachers[0],
+                      // location: data.locations[0],
+                      // locations: data.locations,
+                      // subject: data.subjects[0],
+                      // remark: data.remark,
+                      // branch: data.branch,
+                      // description: ""
 
         // change the border color just for fun
         $(this).css('border-color', 'red');
@@ -50,8 +72,13 @@ function calandarsetter(){
   console.log(eventList);
 }
 
+function Initialisation(){
+  ReadPreferences(a => ReadJSON(b => getZermelo()));
+  
+}
+
 function getZermelo(){
-  ReadJSON();
+  
   console.log(getMonday(new Date()).getTime()/1000); // Mon Nov 08 2010
   var unixtime = parseInt(getMonday(new Date()).getTime()/1000);
   //var unixtime = Date.parse("23-8-2018").getTime()/1000
@@ -63,7 +90,7 @@ function getZermelo(){
   console.log(UnixToTime(unixtime1));
   console.log(moment.unix(parseInt(getMonday(new Date()).getTime()/1000)).format('d, M, Y h:mm:ss A'));//////////////////////dit!!!!!!
   console.log(moment.unix(parseInt(getSunday(new Date()).getTime()/1000)).format('dddd, MMMM Do, YYYY h:mm:ss A'));
-  var Message = `https://nsg.zportal.nl/api/v3/appointments?user=~me&start=${unixtime}&end=${unixtime1}&access_token=e3tub6a2ai8g18uq77b2p6tc8g`
+  var Message = `https://nsg.zportal.nl/api/v3/appointments?user=~me&start=${unixtime}&end=${unixtime1}&access_token=${accessToken}`
   get(Message, "");
   console.log(Message);
   //calandarsetter();
@@ -138,17 +165,49 @@ function get(message, data){
                     if(data.subjects[0].includes("cup")) blockColor = '#f2f2f2';
                     //if(data.type !== "exam") blockColor = '#ffd8ff';
                     if(data.cancelled == true) blockColor = '#ff0000';
-                    eventList.push({
-                      title: data.subjects[0] + `\n ${data.locations[0]}`,
-                      start: data.start * 1000,
-                      end: data.end * 1000,
-                      color: blockColor,
-                      teacher: data.teachers[0],
-                      location: data.locations[0],
-                      subject: data.subjects[0],
-                      remark: data.remark,
-                      branch: data.branch
-                    });
+                    ///////////////////////////////////////If JSON file has a overwrite:
+                    var Overwriter;
+                    if(extraEventList.find(element => {
+                      //console.log(element[0]);
+                      if(element[0] == data.id) Overwriter = element;
+                      return element[0] == data.id;
+                    })){
+                      //console.log(element.index);
+                      //console.log(Overwriter[1])
+                      eventList.push({
+                        id: Overwriter[0],
+                        title: data.subjects[0] + `\n ${data.locations[0]}`,
+                        start: data.start * 1000,
+                        end: data.end * 1000,
+                        color: Overwriter[1].Color,
+                        teacher: data.teachers[0],
+                        location: Overwriter[1].Location,
+                        locations: data.locations,
+                        subject: Overwriter[1].Subject,
+                        remark: Overwriter[1].Remark,
+                        branch: data.branch,
+                        description: Overwriter[1].Description,
+                        allDay: false
+                      });
+                    }
+                    else///////////////////If NOT:
+                    {
+                      eventList.push({
+                        id: data.id,
+                        title: data.subjects[0] + `\n ${data.locations[0]}`,
+                        start: data.start * 1000,
+                        end: data.end * 1000,
+                        color: blockColor,
+                        teacher: data.teachers[0],
+                        location: data.locations[0],
+                        locations: data.locations,
+                        subject: data.subjects,
+                        remark: data.remark,
+                        branch: data.branch,
+                        description: "",
+                        allDay: false
+                      });
+                    }
                 }
                 
       calandarsetter();
@@ -288,7 +347,7 @@ function UnixToTime(Timestamp){
   }
 });*/
 
-function ReadJSON(){
+function ReadJSON(callback){
   /////////Read JSON data
                 $.getJSON("ExtraEvents.json", function (data) {
                   $.each(data, function (index, value) {
@@ -297,6 +356,7 @@ function ReadJSON(){
                     if(true){
                       console.log("okagain");
                       eventList.push({
+                      index: index,
                       title: value.Subject + `\n ${value.Location}`,
                       start: value.Start * 1000,
                       end: value.Finish * 1000,
@@ -306,11 +366,23 @@ function ReadJSON(){
                       subject: value.Subject,
                       remark: value.Remark,
                       branch: value.Branch,
+                      allDay: value.AllDay,
+                      description: value.Description,
                       allDay: value.AllDay
                     });
                     }
                 });
                 console.log(extraEventList);
-              });
+              }).done(callback);
                 /////////
+}
+function ReadPreferences(callback){
+  /////////Read JSON data
+  $.getJSON("preferences.json", function (data) {
+    $.each(data, function (index, value) {
+      
+    });
+    accessToken = data.AccessToken;
+  }).done(callback);
+  
 }
