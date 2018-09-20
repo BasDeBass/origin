@@ -111,7 +111,7 @@ function get(message, data){
                     n = i.getMonth();
                     if(i.getMonth().toString().length == 1) n = '0' + i.getMonth();
                     o = i.getFullYear();
-                    eventListStart.push(`${o}-${n}-${m}T${k}:${l}:00`);  
+                    eventListStart.push(`${o}-${n}-${m}T${k}:${l}:00`);
                     let quicksave = `${o}-${n}-${m}T${k}:${l}:00`;
                     //EndDate
                     i = new Date(data.end*1000);
@@ -124,7 +124,7 @@ function get(message, data){
                     n = i.getMonth();
                     if(i.getMonth().toString().length == 1) n = '0' + i.getMonth();
                     o = i.getFullYear();
-                    eventListEnd.push(`${o}-${n}-${m}T${k}:${l}:00`);  
+                    eventListEnd.push(`${o}-${n}-${m}T${k}:${l}:00`);
 
                     /*eventList.push({
                       title: data.subjects[0],
@@ -294,7 +294,7 @@ function ReadJSON(){
                   $.each(data, function (index, value) {
                     console.log("ok");
                     extraEventList.push([index, value]);
-                    if(index == "New"){
+                    if(true){
                       console.log("okagain");
                       eventList.push({
                       title: value.Subject + `\n ${value.Location}`,
