@@ -305,7 +305,8 @@ function ReadJSON(){
                       location: value.Location,
                       subject: value.Subject,
                       remark: value.Remark,
-                      branch: value.Branch
+                      branch: value.Branch,
+                      allDay: value.AllDay
                     });
                     }
                 });
