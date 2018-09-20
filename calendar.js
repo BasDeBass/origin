@@ -377,7 +377,7 @@ function ReadJSON(callback){
                 /////////
 }
 function ReadPreferences(callback){
-  /////////Read JSON data
+  /////////Read JSON data:
   $.getJSON("preferences.json", function (data) {
     $.each(data, function (index, value) {
       
