@@ -4,6 +4,7 @@ var eventList = [];
 var extraEventList= [];
 
 var accessToken;
+var ColorPalette;
 
 
 function calandarsetter(){
@@ -158,13 +159,13 @@ function get(message, data){
                       start: quicksave,
                       end: `${o}-${n}-${m}T${k}:${l}:00`   #ff0000
                     });*/
-                    var blockColor = '#0051c4';
-                    if(data.modified == true) blockColor = '#00e5e5';
-                    if(data.type == "exam") blockColor = '#ffd800';
-                    if(data.subjects[0] == "kstsp" || data.subjects[0] == "kstspd" || data.subjects[0].includes("kstalg") || data.subjects[0].includes("kbb")) blockColor = '#e5ff00';
-                    if(data.subjects[0].includes("cup")) blockColor = '#f2f2f2';
+                    var blockColor = ColorPalette.NormalColor;
+                    if(data.modified == true) blockColor = ColorPalette.ChangedColor;
+                    if(data.type == "exam") blockColor = ColorPalette.ExamColor;
+                    if(data.subjects[0] == "kstsp" || data.subjects[0] == "kstspd" || data.subjects[0].includes("kstalg") || data.subjects[0].includes("kbb")) blockColor = ColorPalette.FullCupColor;
+                    if(data.subjects[0].includes("cup")) blockColor = ColorPalette.EmptyCupColor;
                     //if(data.type !== "exam") blockColor = '#ffd8ff';
-                    if(data.cancelled == true) blockColor = '#ff0000';
+                    if(data.cancelled == true) blockColor = ColorPalette.CancelColor;
                     ///////////////////////////////////////If JSON file has a overwrite:
                     var Overwriter;
                     if(extraEventList.find(element => {
@@ -383,6 +384,29 @@ function ReadPreferences(callback){
       
     });
     accessToken = data.AccessToken;
+    ColorPalette = {
+      NormalColor: data.NormalColor,
+      ChangedColor: data.ChangedColor,
+      ExamColor: data.ExamColor,
+      FullCupColor: data.FullCupColor,
+      EmptyCupColor: data.EmptyCupColor,
+      CancelColor: data.CancelColor,
+      AddedLessonColor: data.AddedLessonColor,
+      AddedHomeworkColor: data.AddedHomeworkColor
+    }
   }).done(callback);
   
 }
+
+
+
+
+
+// "NormalColor": "#0051c4",
+// "ChangedColor": "#00e5e5",
+// "ExamColor": "#ffd800",
+// "FullCupColor": "#e5ff00",
+// "EmptyCupColor": "#f2f2f2",
+// "CancelColor": "#ff0000",
+// "AddedLessonColor": "",
+// "AddedHomeworkColor": ""
