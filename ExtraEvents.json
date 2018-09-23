@@ -9,7 +9,8 @@
 		"Teacher": "OD",
 		"Remark": "remark..",
 		"Branch": "branch..",
-		"Description": "Homework thing..."
+		"Description": "Homework thing...",
+		"Info": "NewLesson"
 	},
 	"New1": {
 		"AllDay": true,
@@ -21,7 +22,8 @@
 		"Teacher": "OD",
 		"Remark": "remark..",
 		"Branch": "branch..",
-		"Description": "Homework a..."
+		"Description": "<DONE:->Homework a...",
+		"Info": "NewLesson"
 	},
 	"Addition": {
 		"AllDay": true,
@@ -33,7 +35,8 @@
 		"Teacher": "OD",
 		"Remark": "remark..",
 		"Branch": "branch..",
-		"Description": "Homework a..."
+		"Description": "Homework a...",
+		"Info": "NewLesson"
 	},
 	"1028697": {
 		"Start": 20310340,

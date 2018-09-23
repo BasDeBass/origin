@@ -14,9 +14,11 @@
     <script src='moment.min.js'></script>
     <script src='bootstrap-4.1.3-dist/js/bootstrap.js'></script>
     <script src='fullcalendar-3.9.0/fullcalendar.js'></script>
-    <script>
-        
-    </script>
+    <style type="text/css">
+    .container > * {
+        display: inline-block;
+    }
+    </style>
     <script src="calendar.js"></script>
     <div id='calendar'>
         <script type="text/javascript">
@@ -29,7 +31,80 @@
     </div>
 </head>
     <body>
-        <div id="div1">
+        <div class="modal fade" id="mymodal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3>A title for my modal</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <dir class="container">
+                        <p>ID:</p>
+                        <p id="mymodal-text-1">The ID</p>
+                    </dir>
+                    <dir class="container">
+                        <p>Title:</p>
+                        <input id="mymodal-textfield-1"></input>
+                    </dir>
+                    <dir class="container">
+                        <p>Start:</p>
+                        <p id="mymodal-text-2">0000000</p>
+                    </dir>
+                    <dir class="container">
+                        <p>End:</p>
+                        <p id="mymodal-text-3">1111111:</p>
+                    </dir>
+                    <dir class="container">
+                        <p>Color:</p>
+                        <input id="mymodal-textfield-2"></input>
+                    </dir>
+                    <dir class="container">
+                        <p>Teacher:</p>
+                        <input id="mymodal-textfield-3"></input>
+                    </dir>
+                    <dir class="container">
+                        <p>Location:</p>
+                        <input id="mymodal-textfield-4"></input>
+                    </dir>
+                    <dir class="container">
+                        <p>Locations:</p>
+                        <p id="mymodal-text-4">Locations:</p>
+                    </dir>
+                    <dir class="container">
+                        <p>Subject:</p>
+                        <input id="mymodal-textfield-5"></input>
+                    </dir>
+                    <dir class="container">
+                        <p>Remark:</p>
+                        <p id="mymodal-text-5">Remark:</p>
+                    </dir>
+                    <dir class="container">
+                        <p>Branch:</p>
+                        <p id="mymodal-text-6">Branch:</p>
+                    </dir>
+                    <dir class="container">
+                        <p>AllDay:</p>
+                        <input type="checkbox" id="mymodal-textfield-7"></input>
+                    </dir>
+                    <!--<dir class="container">-->
+                        <p>Description:</p>
+                        <textarea id="mymodal-textfield-6" class="form-control"></textarea>
+                    <!--</dir>-->
+                    <div class="form-group">
+                      <label for="message-text" class="col-form-label">Message:</label>
+                      <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="Save-Button">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
     </body>
     
 

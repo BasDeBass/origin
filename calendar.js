@@ -26,7 +26,8 @@ function calandarsetter(){
         myCustomButton: {
           text: 'custom!',
           click: function() {
-            alert('clicked the custom button!');
+            //alert('clicked the custom button! -=-=-=-=-=-=-');
+            $('#mymodal').modal('toggle');
           }
         }
       },
@@ -50,7 +51,7 @@ function calandarsetter(){
       eventClick: function(calEvent, jsEvent, view) {
 
         //alert('Event: ' + calEvent.subject);
-        alert(`ID: ${calEvent.id} \nTitle: ${calEvent.title} \nStart: ${calEvent.start} \nEnd: ${calEvent.end} \nColor: ${calEvent.color} \nTeacher: ${calEvent.teacher} \nLocation: ${calEvent.location} \nLocations: ${calEvent.locations} \nSubject: ${calEvent.subject} \nRemark: ${calEvent.remark} \nBranch: ${calEvent.branch} \nDescription: ${calEvent.description} \nAllDay: ${calEvent.allDay} \n`);
+        //alert(`ID: ${calEvent.id} \nTitle: ${calEvent.title} \nStart: ${calEvent.start} \nEnd: ${calEvent.end} \nColor: ${calEvent.color} \nTeacher: ${calEvent.teacher} \nLocation: ${calEvent.location} \nLocations: ${calEvent.locations} \nSubject: ${calEvent.subject} \nRemark: ${calEvent.remark} \nBranch: ${calEvent.branch} \nDescription: ${calEvent.description} \nAllDay: ${calEvent.allDay} \n`);
 
                       // id: data.id,
                       // title: data.subjects[0] + `\n ${data.locations[0]}`,
@@ -64,6 +65,25 @@ function calandarsetter(){
                       // remark: data.remark,
                       // branch: data.branch,
                       // description: ""
+                      //document.getElementById("mymodal-text").innerHTML = `ID: ${calEvent.id} <br> Title: ${calEvent.title} <br> Start: ${calEvent.start} <br> End: ${calEvent.end} <br> Color: ${calEvent.color} <br> Teacher: ${calEvent.teacher} <br> Location: ${calEvent.location} <br> Locations: ${calEvent.locations} <br> Subject: ${calEvent.subject} <br> Remark: ${calEvent.remark} <br> Branch: ${calEvent.branch} <br> Description: ${calEvent.description} <br> AllDay: ${calEvent.allDay}`;
+                      $('#mymodal').modal('toggle');
+                      //change texts
+                      document.getElementById("mymodal-text-1").innerHTML = calEvent.id;
+                      document.getElementById("mymodal-text-2").innerHTML = calEvent.start;
+                      document.getElementById("mymodal-text-3").innerHTML = calEvent.end;
+                      document.getElementById("mymodal-text-4").innerHTML = calEvent.locations;
+                      document.getElementById("mymodal-text-5").innerHTML = calEvent.remark;
+                      document.getElementById("mymodal-text-6").innerHTML = calEvent.branch;
+                      //change textfields
+                      document.getElementById("mymodal-textfield-1").value = calEvent.title;
+                      document.getElementById("mymodal-textfield-2").value = calEvent.color;
+                      document.getElementById("mymodal-textfield-3").value = calEvent.teacher;
+                      document.getElementById("mymodal-textfield-4").value = calEvent.location;
+                      document.getElementById("mymodal-textfield-5").value = calEvent.subject;
+                      //change extras
+                      document.getElementById("mymodal-textfield-6").value = calEvent.description;
+                      document.getElementById("mymodal-textfield-7").checked = calEvent.allDay;
+                      //
 
         // change the border color just for fun
         $(this).css('border-color', 'red');
@@ -170,21 +190,26 @@ function get(message, data){
                     ///////////////////////////////////////If JSON file has a overwrite:
                     var Overwriter;
                     if(extraEventList.find(element => {
-                      //console.log(element[0]);
+                      //console.log(element[2]);
                       if(element[0] == data.id) Overwriter = element;
                       return element[0] == data.id;
                     })){
                       //console.log(element.index);
-                      //console.log(Overwriter[1])
+                      console.log(Overwriter)
+                      ////CheckForHomework if so check if it starts with <DONE:->
+                      var ColorHolder = Overwriter[1].Color;
+                      if(Overwriter[1].Description !=="") ColorHolder = colorPalette.AddedHomeworkColor;
+                      if(Overwriter[1].Description.includes("<DONE:->")) ColorHolder = colorPalette.HomeworkDoneColor;
+                      ////
                       eventList.push({
                         id: Overwriter[0],
                         title: data.subjects[0] + `\n ${data.locations[0]}`,
-                        start: data.start * 1000,
-                        end: data.end * 1000,
-                        color: Overwriter[1].Color,
+                        start: moment(data.start * 1000).toISOString(true),
+                        end: moment(data.end * 1000).toISOString(true),
+                        color: ColorHolder,
                         teacher: data.teachers[0],
                         location: Overwriter[1].Location,
-                        locations: data.locations,
+                        locations: data.locations,                               
                         subject: Overwriter[1].Subject,
                         remark: Overwriter[1].Remark,
                         branch: data.branch,
@@ -197,8 +222,8 @@ function get(message, data){
                       eventList.push({
                         id: data.id,
                         title: data.subjects[0] + `\n ${data.locations[0]}`,
-                        start: data.start * 1000,
-                        end: data.end * 1000,
+                        start: moment(data.start * 1000 ).toISOString(true),
+                        end: moment(data.end * 1000).toISOString(true),
                         color: blockColor,
                         teacher: data.teachers[0],
                         location: data.locations[0],
@@ -354,7 +379,12 @@ function ReadJSON(callback){
                 $.getJSON("ExtraEvents.json", function (data) {
                   $.each(data, function (index, value) {
                     console.log("ok");
-                    extraEventList.push([index, value]);
+                    ////CheckForHomework if so check if it starts with <DONE:->
+                    var ColorHolder = value.color;
+                    if(value.Description !=="") ColorHolder = colorPalette.AddedHomeworkColor;
+                    if(value.Description.includes("<DONE:->")) ColorHolder = colorPalette.HomeworkDoneColor;
+                    ////
+                    extraEventList.push([index, value, value.Info]);
                     if(true){
                       console.log("okagain");
                       eventList.push({
@@ -362,7 +392,7 @@ function ReadJSON(callback){
                       title: value.Subject + `\n ${value.Location}`,
                       start: value.Start * 1000,
                       end: value.Finish * 1000,
-                      color: value.Color,
+                      color: ColorHolder,
                       teacher: value.Teacher,
                       location: value.Location,
                       subject: value.Subject,
@@ -393,21 +423,24 @@ function ReadPreferences(callback){
       EmptyCupColor: data.EmptyCupColor,
       CancelColor: data.CancelColor,
       AddedLessonColor: data.AddedLessonColor,
-      AddedHomeworkColor: data.AddedHomeworkColor
+      AddedHomeworkColor: data.AddedHomeworkColor,
+      HomeworkDoneColor: data.HomeworkDoneColor
     };
   }).done(callback);
   
 }
 
 
-
-
-
-// "NormalColor": "#0051c4",
-// "ChangedColor": "#00e5e5",
-// "ExamColor": "#ffd800",
-// "FullCupColor": "#e5ff00",
-// "EmptyCupColor": "#f2f2f2",
-// "CancelColor": "#ff0000",
-// "AddedLessonColor": "",
-// "AddedHomeworkColor": ""
+  // "NormalColor": "#2589BD",
+  // "ChangedColor": "#00e5e5",
+  // "ExamColor": "#ffd800",
+  // "FullCupColor": "#FFB30F",
+  // "EmptyCupColor": "#f2f2f2",
+  // "CancelColor": "#FD151B",
+  // "AddedLessonColor": "",
+  // "AddedHomeworkColor": "#c44512",
+  // "HomeworkDoneColor": "#13c474"
+$('#myModal').on('hidden', function () {
+  // do something…
+  alert("af");
+})
