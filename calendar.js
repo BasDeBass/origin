@@ -87,7 +87,15 @@ function calandarsetter(){
 
         // change the border color just for fun
         $(this).css('border-color', 'red');
-      }
+      },
+    windowResize: function(view) {
+        if ($(window).width() < 514){
+            $('#calendar').fullCalendar( 'changeView', 'basicDay' );
+        } else {
+            $('#calendar').fullCalendar( 'changeView', 'month' );
+        }
+    }
+      
     });
   
   console.log(eventList);
@@ -209,7 +217,7 @@ function get(message, data){
                         color: ColorHolder,
                         teacher: data.teachers[0],
                         location: Overwriter[1].Location,
-                        locations: data.locations,                               
+                        locations: data.locations,
                         subject: Overwriter[1].Subject,
                         remark: Overwriter[1].Remark,
                         branch: data.branch,
